@@ -1,6 +1,7 @@
 #include "SummonBuddyManager.h"
 
 namespace EROnlineSummons {
+    // TODO: proper type defs might help a ton cleaning this up
     void SummonBuddyManager::SpawnSummons(int buddyGoodsId) {
         auto tlsIndex = *(int *) (GetBaseAddress() + OFFSET_TLS_INDEX_USE_BUDDY_GOODS);
         auto tlsValue = GetBaseAddress() + OFFSET_TLS_VALUE_USE_BUDDY_GOODS;

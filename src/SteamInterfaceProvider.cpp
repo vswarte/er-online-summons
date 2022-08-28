@@ -17,6 +17,7 @@ namespace EROnlineSummons {
 
     void SteamInterfaceProvider::EnsureReady() {
         if (!_ready) {
+            // TODO: implement proper exception type for this
             throw "SteamInterfaceProvider is not _ready";
         }
     }

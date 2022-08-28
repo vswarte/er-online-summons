@@ -2,6 +2,7 @@
 
 namespace EROnlineSummons {
     uint64_t SessionManager::GetHostSteamId() {
+        // TODO: refactor duplicate code
         auto sessionManagerImp = *(uintptr_t *) (GetBaseAddress() + OFFSET_SESSION_MANAGER_IMP);
         if (sessionManagerImp == NULL) {
             Logging::WriteLine("Could not obtain CSSessionManagerImp");
@@ -15,6 +16,7 @@ namespace EROnlineSummons {
     std::vector<uint64_t> SessionManager::GetPartyMemberSteamIdsForBroadcast() {
         auto result = std::vector<uint64_t>();
 
+        // TODO: refactor duplicate code
         auto sessionManagerImp = *(uintptr_t *) (GetBaseAddress() + OFFSET_SESSION_MANAGER_IMP);
         if (sessionManagerImp == NULL) {
             Logging::WriteLine("Could not obtain CSSessionManagerImp");

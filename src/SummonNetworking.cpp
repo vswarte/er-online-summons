@@ -21,6 +21,7 @@ namespace EROnlineSummons {
         broadcastBuffer((char *) &summonSpawnedMessage, sizeof(SummonSpawnedMessage));
     }
 
+    // TODO: refactor handling into a reactor pattern
     void SummonNetworking::ReadSummonEvents() {
         SteamNetworkingMessage_t *receivedMessages[32];
         auto receivedMessageCount = _steamNetworkingMessages->ReceiveMessagesOnChannel(
@@ -46,6 +47,7 @@ namespace EROnlineSummons {
         }
     }
 
+    // TODO: set the messaging flags to reliable
     void SummonNetworking::sendBuffer(uint64_t steamId, char *payload, int size) {
         Logging::WriteLine("Attempting to send buffer to %llu", steamId);
 
@@ -65,12 +67,8 @@ namespace EROnlineSummons {
         }
     }
 
+    // TODO: validate against players in the steam lobby
     void SummonNetworking::onMessageSessionRequest(SteamNetworkingMessagesSessionRequest_t *messageSessionRequest) {
-        Logging::WriteLine(
-            "Got message session request from %i",
-            messageSessionRequest->m_identityRemote.GetSteamID()
-        );
-
         _steamNetworkingMessages->AcceptSessionWithUser(messageSessionRequest->m_identityRemote);
     }
 }

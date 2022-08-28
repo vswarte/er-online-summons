@@ -19,7 +19,9 @@ set(SOURCES
     src/SummonNetworking.cpp src/SummonNetworking.h
     src/OnlineSummons.cpp src/OnlineSummons.h
     src/SummonNetworkingMessages.cpp src/SummonNetworkingMessages.h
-        src/SessionManager.cpp src/SessionManager.h src/SummonBuddyManager.cpp src/SummonBuddyManager.h)
+    src/SessionManager.cpp src/SessionManager.h
+    src/SummonBuddyManager.cpp src/SummonBuddyManager.h
+)
 
 include_directories(src include)
 

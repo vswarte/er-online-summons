@@ -34,7 +34,9 @@ namespace EROnlineSummons {
             // TODO: for the local player this will be NULL but might want to use something less naive?
             auto steamConnection = *(uintptr_t *) (playerConnection + (i * 0x100));
             if (steamConnection == NULL) {
+                #ifndef NDEBUG
                 Logging::WriteLine("Got player connection without steam connection!");
+                #endif
                 continue;
             }
 

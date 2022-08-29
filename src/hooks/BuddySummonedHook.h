@@ -2,7 +2,7 @@
 
 #include "core/Logging.h"
 #include "core/JumpHook.h"
-#include "SummonNetworking.h"
+#include "networking/SummonNetworking.h"
 
 namespace EROnlineSummons {
     class BuddySummonedHook : public JumpHook {

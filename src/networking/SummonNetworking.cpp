@@ -1,4 +1,4 @@
-#include "SummonNetworking.h"
+#include "networking/SummonNetworking.h"
 
 namespace EROnlineSummons {
     SummonNetworking::SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages, SummonBuddyManager *summonBuddyManager) {
@@ -6,12 +6,18 @@ namespace EROnlineSummons {
             throw std::invalid_argument("steamNetworkingMessages");
         }
 
+        if (summonBuddyManager == nullptr) {
+            throw std::invalid_argument("summonBuddyManager");
+        }
+
         _steamNetworkingMessages = steamNetworkingMessages;
         _summonBuddyManager = summonBuddyManager;
     }
 
     void SummonNetworking::SendSummonSpawned(int buddyGoodsId) {
+        #ifndef NDEBUG
         Logging::WriteLine("Sending SummonSpawned message (size: %i)", sizeof(SummonSpawnedMessage));
+        #endif
 
         auto summonSpawnedMessage = SummonSpawnedMessage();
         summonSpawnedMessage.header.type = SummonNetworkMessageType::SummonSpawned;
@@ -31,7 +37,9 @@ namespace EROnlineSummons {
         );
 
         for (auto i = 0; i < receivedMessageCount; i++) {
+            #ifndef NDEBUG
             Logging::WriteLine("Received a message of %i bytes", receivedMessages[i]->GetSize());
+            #endif
 
             auto summonMessage = (SummonSpawnedMessage *) receivedMessages[i]->GetData();
             _summonBuddyManager->SpawnSummons(summonMessage->buddyGoodsId);
@@ -49,7 +57,9 @@ namespace EROnlineSummons {
 
     // TODO: set the messaging flags to reliable
     void SummonNetworking::sendBuffer(uint64_t steamId, char *payload, int size) {
+        #ifndef NDEBUG
         Logging::WriteLine("Attempting to send buffer to %llu", steamId);
+        #endif
 
         auto networkIdentity = SteamNetworkingIdentity();
         networkIdentity.SetSteamID64(steamId);

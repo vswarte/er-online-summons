@@ -16,11 +16,11 @@ set(SOURCES
 
     src/SteamInterfaceProvider.cpp src/SteamInterfaceProvider.h
     src/hooks/BuddySummonedHook.cpp src/hooks/BuddySummonedHook.h
-    src/SummonNetworking.cpp src/SummonNetworking.h
     src/OnlineSummons.cpp src/OnlineSummons.h
-    src/SummonNetworkingMessages.cpp src/SummonNetworkingMessages.h
     src/SessionManager.cpp src/SessionManager.h
     src/SummonBuddyManager.cpp src/SummonBuddyManager.h
+    src/networking/SummonNetworking.cpp src/networking/SummonNetworking.h
+    src/networking/SummonNetworkingMessages.cpp src/networking/SummonNetworkingMessages.h
 )
 
 include_directories(src include)

@@ -9,12 +9,14 @@ namespace EROnlineSummons {
     public:
         void CreateInterfacesWhenReady();
         ISteamNetworkingMessages *GetNetworkingMessages();
+        ISteamUser *GetUser();
 
     private:
         bool _ready = false;
         bool isReadyForInterfaceCreation();
         void EnsureReady();
 
+        ISteamUser *_user = nullptr;
         ISteamNetworkingMessages *_networkingMessages = nullptr;
     };
 }

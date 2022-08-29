@@ -3,7 +3,7 @@
 BOOL WINAPI DllMain(HINSTANCE baseAddress, DWORD reason, BOOL isStatic) {
     switch (reason) {
         case DLL_PROCESS_ATTACH:
-        attach();
+            attach();
         break;
         case DLL_PROCESS_DETACH:
             detach();
@@ -19,12 +19,14 @@ BOOL WINAPI DllMain(HINSTANCE baseAddress, DWORD reason, BOOL isStatic) {
 void attach() {
     EROnlineSummons::Logging::Init();
 
+    #ifndef NDEBUG
+    SetUnhandledExceptionFilter(exception_handler);
+    AddVectoredExceptionHandler(0, exception_handler);
+    #endif
+
     if (MH_Initialize() != MH_OK) {
         EROnlineSummons::Logging::WriteLine("MinHook initialization failed");
     }
-
-    SetUnhandledExceptionFilter(exception_handler);
-    AddVectoredExceptionHandler(0, exception_handler);
 
     // TODO: delete these on cleanup
     auto summonBuddyManager = new EROnlineSummons::SummonBuddyManager();
@@ -39,9 +41,11 @@ void attach() {
 
 void detach() {
     onlineSummons->Stop();
-    EROnlineSummons::Logging::WriteLine("Online Summons stopped");
 
-    EROnlineSummons::Logging::WriteLine("Deiniting logging");
+    #ifndef NDEBUG
+    EROnlineSummons::Logging::WriteLine("Online Summons stopped");
+    #endif
+
     EROnlineSummons::Logging::Deinit();
 }
 

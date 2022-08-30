@@ -2,6 +2,7 @@
 
 #include "core/Memory.h"
 #include "core/Logging.h"
+#include "game/Offsets.h"
 #include  <Processthreadsapi.h>
 
 namespace EROnlineSummons {

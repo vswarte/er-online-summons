@@ -2,9 +2,9 @@
 
 #include "core/Memory.h"
 #include "core/Logging.h"
-#include "SessionManager.h"
-#include "SummonBuddyManager.h"
-#include "SteamInterfaceProvider.h"
+#include "game/SessionManager.h"
+#include "game/SummonBuddyManager.h"
+#include "core/SteamInterfaceProvider.h"
 #include "networking/SummonNetworkingMessages.h"
 
 #define ER_ONLINE_SUMMONS_STEAM_MESSAGE_CHANNEL 6386536 // = 61 73 68 = ash

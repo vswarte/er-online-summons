@@ -1,4 +1,4 @@
-#include "hooks/BuddySummonedHook.h"
+#include "game/hooks/BuddySummonedHook.h"
 
 namespace EROnlineSummons {
     BuddySummonedHook* BuddySummonedHook::_instance = nullptr;

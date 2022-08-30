@@ -4,6 +4,7 @@
 #include <cstdint>
 #include "core/Memory.h"
 #include "core/Logging.h"
+#include "game/Offsets.h"
 
 namespace EROnlineSummons {
     class SessionManager {

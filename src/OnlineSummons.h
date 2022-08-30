@@ -2,9 +2,10 @@
 
 #include <thread>
 #include "core/Memory.h"
-#include "SteamInterfaceProvider.h"
-#include "hooks/BuddySummonedHook.h"
+#include "game/Offsets.h"
 #include "networking/SummonNetworking.h"
+#include "core/SteamInterfaceProvider.h"
+#include "game/hooks/BuddySummonedHook.h"
 
 namespace EROnlineSummons {
     class OnlineSummons {

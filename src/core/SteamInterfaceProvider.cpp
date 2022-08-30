@@ -1,4 +1,4 @@
-#include "SteamInterfaceProvider.h"
+#include "core/SteamInterfaceProvider.h"
 
 namespace EROnlineSummons {
     // TODO: hook SteamAPI_Init instead

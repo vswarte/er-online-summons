@@ -13,14 +13,18 @@ set(SOURCES
     src/core/JumpHook.cpp src/core/JumpHook.h
     src/core/Logging.cpp src/core/Logging.h
     src/core/Memory.cpp src/core/Memory.h
+    src/core/SteamInterfaceProvider.cpp src/core/SteamInterfaceProvider.h
 
-    src/SteamInterfaceProvider.cpp src/SteamInterfaceProvider.h
-    src/hooks/BuddySummonedHook.cpp src/hooks/BuddySummonedHook.h
-    src/OnlineSummons.cpp src/OnlineSummons.h
-    src/SessionManager.cpp src/SessionManager.h
-    src/SummonBuddyManager.cpp src/SummonBuddyManager.h
+    src/game/hooks/BuddySummonedHook.cpp src/game/hooks/BuddySummonedHook.h
+
     src/networking/SummonNetworking.cpp src/networking/SummonNetworking.h
     src/networking/SummonNetworkingMessages.h
+
+    src/game/Offsets.h
+    src/game/SessionManager.cpp src/game/SessionManager.h
+    src/game/SummonBuddyManager.cpp src/game/SummonBuddyManager.h
+
+    src/OnlineSummons.cpp src/OnlineSummons.h
 )
 
 include_directories(src include)

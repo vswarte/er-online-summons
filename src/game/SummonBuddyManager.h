@@ -9,5 +9,9 @@ namespace EROnlineSummons {
     class SummonBuddyManager {
     public:
         void SpawnSummons(int buddyGoodsId);
+        void QueueRemoveAllSummons();
+
+    private:
+        uintptr_t getSummonBuddyManagerBase();
     };
 }

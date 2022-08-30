@@ -7,12 +7,16 @@ namespace EROnlineSummons {
     std::ofstream Logging::_fileHandle;
 
     void Logging::Init() {
+        #ifndef NDEBUG
         allocateConsole();
+        #endif
         openLogFile();
     }
 
     void Logging::Deinit() {
+        #ifndef NDEBUG
         freeConsole();
+        #endif
         closeLogFile();
     }
 

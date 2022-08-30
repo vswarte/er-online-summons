@@ -28,13 +28,22 @@ void attach() {
         EROnlineSummons::Logging::WriteLine("MinHook initialization failed");
     }
 
-    // TODO: delete these on cleanup
     auto summonBuddyManager = new EROnlineSummons::SummonBuddyManager();
     auto steamInterfaceProvider = new EROnlineSummons::SteamInterfaceProvider();
     steamInterfaceProvider->CreateInterfacesWhenReady();
 
+    auto summonNetworking = new EROnlineSummons::SummonNetworking(steamInterfaceProvider->GetNetworkingMessages());
+
+    // TODO: delete these on cleanup
+    auto summonBuddyStateFactory = new EROnlineSummons::SummonBuddyStateFactory(summonBuddyManager, summonNetworking);
+    auto summonBuddyStateMachine = new EROnlineSummons::SummonBuddyStateMachine(
+        summonBuddyStateFactory->CreateNoSummonState()
+    );
+
     onlineSummons = new EROnlineSummons::OnlineSummons(
-        new EROnlineSummons::SummonNetworking(steamInterfaceProvider->GetNetworkingMessages(), summonBuddyManager)
+        summonBuddyStateMachine,
+        summonBuddyStateFactory,
+        summonNetworking
     );
     onlineSummons->Start();
 }

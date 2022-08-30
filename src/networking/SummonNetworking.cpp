@@ -1,24 +1,15 @@
 #include "networking/SummonNetworking.h"
 
 namespace EROnlineSummons {
-    SummonNetworking::SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages, SummonBuddyManager *summonBuddyManager) {
+    SummonNetworking::SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages) {
         if (steamNetworkingMessages == nullptr) {
             throw std::invalid_argument("steamNetworkingMessages");
         }
 
-        if (summonBuddyManager == nullptr) {
-            throw std::invalid_argument("summonBuddyManager");
-        }
-
         _steamNetworkingMessages = steamNetworkingMessages;
-        _summonBuddyManager = summonBuddyManager;
     }
 
     void SummonNetworking::SendSummonSpawned(int buddyGoodsId) {
-        #ifndef NDEBUG
-        Logging::WriteLine("Sending SummonSpawned message (size: %i)", sizeof(SummonSpawnedMessage));
-        #endif
-
         auto message = SummonSpawnedMessage();
         message.header.type = SummonNetworkMessageType::SummonSpawned;
         message.buddyGoodsId = buddyGoodsId;
@@ -27,19 +18,15 @@ namespace EROnlineSummons {
     }
 
     void SummonNetworking::SendRequestSummonSpawn(int buddyGoodsId) {
-        #ifndef NDEBUG
-        Logging::WriteLine("Sending RequestSummonSpawn message (size: %i)", sizeof(SummonSpawnedMessage));
-        #endif
-
-        auto message = RequestSummonSpawnMessage();
-        message.header.type = SummonNetworkMessageType::RequestSummonSpawn;
+        auto message = SummonRequestedMessage();
+        message.header.type = SummonNetworkMessageType::SummonRequested;
         message.buddyGoodsId = buddyGoodsId;
 
-        broadcastBuffer((char *) &message, sizeof(RequestSummonSpawnMessage));
+        broadcastBuffer((char *) &message, sizeof(SummonRequestedMessage));
     }
 
     // TODO: refactor handling into a reactor pattern
-    void SummonNetworking::ReadSummonEvents() {
+    std::vector<std::vector<char>> SummonNetworking::RetrieveMessages() {
         SteamNetworkingMessage_t *receivedMessages[32];
         auto receivedMessageCount = _steamNetworkingMessages->ReceiveMessagesOnChannel(
             ER_ONLINE_SUMMONS_STEAM_MESSAGE_CHANNEL,
@@ -47,17 +34,37 @@ namespace EROnlineSummons {
             32
         );
 
+        std::vector<std::vector<char>> result;
         for (auto i = 0; i < receivedMessageCount; i++) {
             #ifndef NDEBUG
             Logging::WriteLine("Received a message of %i bytes", receivedMessages[i]->GetSize());
             #endif
 
-            auto summonMessage = (SummonSpawnedMessage *) receivedMessages[i]->GetData();
-            _summonBuddyManager->SpawnSummons(summonMessage->buddyGoodsId);
+            // TODO: refactor the validation a bit
+            auto messageData = receivedMessages[i]->GetData();
+            auto header = (SummonMessageHeader *) messageData;
+            auto messageLength = getMessageLength(header->type);
+            if (messageLength != 0 && messageLength == receivedMessages[i]->GetSize()) {
+                std::vector<char> messageBuffer(messageLength);
+                memcpy(messageBuffer.data(), messageData, messageLength);
+                result.emplace_back(messageBuffer);
+            }
 
-            // TODO: implement some garbage to demux whatever is going on and handle the payloads
             receivedMessages[i]->Release();
         }
+
+        return result;
+    }
+
+    int SummonNetworking::getMessageLength(SummonNetworkMessageType type) {
+        switch (type) {
+            case SummonNetworkMessageType::SummonSpawned:
+                return sizeof(SummonSpawnedMessage);
+            case SummonNetworkMessageType::SummonRequested:
+                return sizeof(SummonRequestedMessage);
+        }
+
+        return 0;
     }
 
     void SummonNetworking::broadcastBuffer(char *payload, int size) {
@@ -69,7 +76,12 @@ namespace EROnlineSummons {
     // TODO: set the messaging flags to reliable
     void SummonNetworking::sendBuffer(uint64_t steamId, char *payload, int size) {
         #ifndef NDEBUG
-        Logging::WriteLine("Attempting to send buffer to %llu", steamId);
+        Logging::WriteLine(
+            "Attempting to send buffer (type: %i, size: %i) to %llu",
+            *(char*) payload,
+            size,
+            steamId
+        );
         #endif
 
         auto networkIdentity = SteamNetworkingIdentity();
@@ -91,5 +103,13 @@ namespace EROnlineSummons {
     // TODO: validate against players in the steam lobby
     void SummonNetworking::onMessageSessionRequest(SteamNetworkingMessagesSessionRequest_t *messageSessionRequest) {
         _steamNetworkingMessages->AcceptSessionWithUser(messageSessionRequest->m_identityRemote);
+    }
+
+    bool SummonNetworking::ShouldNetwork() {
+        return SessionManager::IsInSession();
+    }
+
+    bool SummonNetworking::HasAuthority() {
+        return SessionManager::IsHost();
     }
 }

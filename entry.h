@@ -6,6 +6,8 @@
 #include "OnlineSummons.h"
 #include "game/SummonBuddyManager.h"
 #include "networking/SummonNetworking.h"
+#include "statemachine/SummonBuddyStateFactory.h"
+#include "statemachine/SummonBuddyStateMachine.h"
 
 #define EXCEPTION_STRING_SIZE    1024
 

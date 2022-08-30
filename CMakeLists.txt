@@ -14,18 +14,19 @@ set(SOURCES
     src/core/Logging.cpp src/core/Logging.h
     src/core/Memory.cpp src/core/Memory.h
     src/core/SteamInterfaceProvider.cpp src/core/SteamInterfaceProvider.h
-
     src/game/hooks/BuddySummonedHook.cpp src/game/hooks/BuddySummonedHook.h
-
     src/networking/SummonNetworking.cpp src/networking/SummonNetworking.h
     src/networking/SummonNetworkingMessages.h
-
     src/game/Offsets.h
     src/game/SessionManager.cpp src/game/SessionManager.h
     src/game/SummonBuddyManager.cpp src/game/SummonBuddyManager.h
-
+    src/statemachine/SummonBuddyStateMachine.cpp src/statemachine/SummonBuddyStateMachine.h
+    src/statemachine/states/SummonSpawnedSummonBuddyState.cpp src/statemachine/states/SummonSpawnedSummonBuddyState.h
+    src/statemachine/states/NoSummonSummonBuddyState.cpp src/statemachine/states/NoSummonSummonBuddyState.h
+    src/statemachine/SummonBuddyStateFactory.cpp src/statemachine/SummonBuddyStateFactory.h
+    src/statemachine/states/SummonRequestedSummonBuddyState.cpp src/statemachine/states/SummonRequestedSummonBuddyState.h
     src/OnlineSummons.cpp src/OnlineSummons.h
-        src/SummonBuddyStateMachine.cpp src/SummonBuddyStateMachine.h)
+        src/game/hooks/BuddyGoodsStateHook.cpp src/game/hooks/BuddyGoodsStateHook.h)
 
 include_directories(src include)
 

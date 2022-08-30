@@ -3,20 +3,20 @@
 namespace EROnlineSummons {
     enum class SummonNetworkMessageType : char {
         SummonSpawned = 0x1,
-        RequestSummonSpawn = 0x2,
+        SummonRequested = 0x2,
     };
 
-    struct __attribute__ ((__packed__)) SummonNetworkMessageHeader {
+    struct __attribute__ ((__packed__)) SummonMessageHeader {
         SummonNetworkMessageType type;
     };
 
     struct __attribute__ ((__packed__)) SummonSpawnedMessage {
-        SummonNetworkMessageHeader header;
+        SummonMessageHeader header;
         int buddyGoodsId;
     };
 
-    struct __attribute__ ((__packed__)) RequestSummonSpawnMessage {
-        SummonNetworkMessageHeader header;
+    struct __attribute__ ((__packed__)) SummonRequestedMessage {
+        SummonMessageHeader header;
         int buddyGoodsId;
     };
 }

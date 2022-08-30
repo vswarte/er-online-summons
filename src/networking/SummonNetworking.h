@@ -12,20 +12,23 @@
 namespace EROnlineSummons {
     class SummonNetworking {
     public:
-        SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages, SummonBuddyManager *summonBuddyManager);
+        SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages);
 
         void SendSummonSpawned(int buddyGoodsId);
         void SendRequestSummonSpawn(int buddyGoodsId);
 
-        void ReadSummonEvents();
+        std::vector<std::vector<char>> RetrieveMessages();
+
+        bool ShouldNetwork();
+        bool HasAuthority();
 
     private:
         STEAM_CALLBACK(SummonNetworking, onMessageSessionRequest, SteamNetworkingMessagesSessionRequest_t);
 
+        int getMessageLength(SummonNetworkMessageType type);
+
         ISteamNetworkingMessages *_steamNetworkingMessages = nullptr;
         void broadcastBuffer(char *payload, int size);
         void sendBuffer(uint64_t steamId, char *payload, int size);
-
-        SummonBuddyManager *_summonBuddyManager = nullptr;
     };
 }

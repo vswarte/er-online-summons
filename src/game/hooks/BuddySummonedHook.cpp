@@ -3,58 +3,40 @@
 namespace EROnlineSummons {
     BuddySummonedHook* BuddySummonedHook::_instance = nullptr;
 
-    BuddySummonedHook::BuddySummonedHook(uintptr_t target, SummonNetworking *summonNetworking)
-        : JumpHook(target, (uintptr_t) onInvoke) {
+    BuddySummonedHook::BuddySummonedHook(
+        uintptr_t target,
+        SummonBuddyStateMachine *stateMachine,
+        SummonBuddyStateFactory *stateFactory,
+        SummonNetworking *summonNetworking
+    ) : JumpHook(target, (uintptr_t) onInvoke) {
         _instance = this;
+        _stateMachine = stateMachine;
+        _stateFactory = stateFactory;
         _summonNetworking = summonNetworking;
     }
 
     // TODO: keep track of who initiated summons some other way as this is abusing registers that aren't ours (isLocalInvocation)
-    bool BuddySummonedHook::onInvoke(uintptr_t worldChrMan, int buddyGoodsId, bool isLocalInvocation) {
+    bool BuddySummonedHook::onInvoke(uintptr_t worldChrMan, int buddyGoodsId) {
         #ifndef NDEBUG
         Logging::WriteLine("Invoked BuddySummonedHook: %i", buddyGoodsId);
         #endif
 
-        // TODO: gotta find some way to bring the handling for this and that on the message reading together
-        auto hasSummoned = invokeOriginal(worldChrMan, buddyGoodsId);
-        if (SessionManager::IsInSession()) {
-            auto isHost = SessionManager::IsHost();
-            #ifndef NDEBUG
-            Logging::WriteLine(
-                "Invocation Local: %i, Is Host: %i, Has Summoned: %i",
-                isLocalInvocation,
-                isHost,
-                hasSummoned
-            );
-            #endif
-
-            if (hasSummoned) {
-                handleSummonSpawn(buddyGoodsId, isHost, isLocalInvocation);
-            } else {
-                handleSummonDespawn(buddyGoodsId, isHost, isLocalInvocation);
-            }
+        switch (_instance->_stateMachine->GetState()) {
+            case (int) SummonBuddyStateMachine::State::SUMMON_SPAWNED:
+                _instance->_stateMachine->TransitionTo(_instance->_stateFactory->CreateNoSummonState());
+                return false;
+            case (int) SummonBuddyStateMachine::State::NO_SUMMONS:
+                if (_instance->_summonNetworking->ShouldNetwork() && !_instance->_summonNetworking->HasAuthority()) {
+                    _instance->_stateMachine->TransitionTo(_instance->_stateFactory->CreateSummonRequestedState(buddyGoodsId));
+                } else {
+                    _instance->_stateMachine->TransitionTo(_instance->_stateFactory->CreateSummonSpawnedState(buddyGoodsId));
+                }
+                return true;
         }
 
-        return hasSummoned;
-    }
-
-    bool BuddySummonedHook::invokeOriginal(uintptr_t worldChrMan, int buddyGoodsId) {
-        uintptr_t (*originalFunction)(...);
-        *(uintptr_t*)&originalFunction = _instance->GetOriginal();
-        return originalFunction(worldChrMan, buddyGoodsId);
-    }
-
-    void BuddySummonedHook::handleSummonSpawn(int buddyGoodsId, bool isHost, bool isLocalInvocation) {
-        if (isHost) {
-            _instance->_summonNetworking->SendSummonSpawned(buddyGoodsId);
-        } else if (isLocalInvocation && !isHost) {
-            _instance->_summonNetworking->SendRequestSummonSpawn(buddyGoodsId);
-        }
-    }
-
-    void BuddySummonedHook::handleSummonDespawn(int buddyGoodsId, bool isHost, bool isLocalInvocation) {
         #ifndef NDEBUG
-        Logging::WriteLine("Should despawn summons");
+        Logging::WriteLine("Did not handle transition from state");
         #endif
+        throw "Did not handle transition from state";
     }
 }

@@ -11,3 +11,5 @@ jobs:
 
       - name: Run cmake
         uses: lukka/run-cmake@v10
+        with:
+          cmakeListsTxtPath: 'CMakeLists.txt'

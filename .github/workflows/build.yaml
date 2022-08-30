@@ -1,0 +1,13 @@
+name: Build
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get cmake
+        uses: lukka/get-cmake@latest
+
+      - name: Run cmake
+        uses: lukka/run-cmake@v10

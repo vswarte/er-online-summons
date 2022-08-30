@@ -6,10 +6,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
       - name: Get cmake
         uses: lukka/get-cmake@latest
 
       - name: Run cmake
         uses: lukka/run-cmake@v10
         with:
-          cmakeListsTxtPath: '${{ github.workspace }}/../CMakeLists.txt'
+          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'

@@ -20,7 +20,7 @@ set(SOURCES
     src/SessionManager.cpp src/SessionManager.h
     src/SummonBuddyManager.cpp src/SummonBuddyManager.h
     src/networking/SummonNetworking.cpp src/networking/SummonNetworking.h
-    src/networking/SummonNetworkingMessages.cpp src/networking/SummonNetworkingMessages.h
+    src/networking/SummonNetworkingMessages.h
 )
 
 include_directories(src include)

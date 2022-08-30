@@ -12,4 +12,4 @@ jobs:
       - name: Run cmake
         uses: lukka/run-cmake@v10
         with:
-          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+          cmakeListsTxtPath: '${{ github.workspace }}/../CMakeLists.txt'

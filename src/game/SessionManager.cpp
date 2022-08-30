@@ -2,30 +2,26 @@
 
 namespace EROnlineSummons {
     uint64_t SessionManager::GetHostSteamId() {
-        // TODO: refactor duplicate code
-        auto sessionManagerImp = *(uintptr_t *) (GetBaseAddress() + OFFSET_SESSION_MANAGER_IMP);
-        if (sessionManagerImp == NULL) {
-            Logging::WriteLine("Could not obtain CSSessionManagerImp");
-            return 0;
-        }
-
-        return *(uint64_t *) (sessionManagerImp + 0xA0);
+        return *(uint64_t *) (getSessionManagerBase() + 0xA0);
     }
 
-    // TODO: this code assumes one player and is in dire need of a refactor
+    bool SessionManager::IsInSession() {
+        return getNetworkState() != NetworkState::None;
+    }
+
+    bool SessionManager::IsHost() {
+        return getNetworkState() == NetworkState::Host;
+    }
+
+    // TODO: this code is in dire need of a refactor
     std::vector<uint64_t> SessionManager::GetPartyMemberSteamIdsForBroadcast() {
         auto result = std::vector<uint64_t>();
 
-        // TODO: refactor duplicate code
-        auto sessionManagerImp = *(uintptr_t *) (GetBaseAddress() + OFFSET_SESSION_MANAGER_IMP);
-        if (sessionManagerImp == NULL) {
-            Logging::WriteLine("Could not obtain CSSessionManagerImp");
-            return result;
-        }
+        auto sessionManagerImp = getSessionManagerBase();
 
         auto playerConnection = *(uintptr_t *) (sessionManagerImp + OFFSET_SESSION_MANAGER_IMP_PLAYER_CONNECTION);
         if (playerConnection == NULL) {
-            Logging::WriteLine("Could not obtain CSSessionManagerImp");
+            Logging::WriteLine("Could not obtain player connection list");
             return result;
         }
 
@@ -34,9 +30,7 @@ namespace EROnlineSummons {
             // TODO: for the local player this will be NULL but might want to use something less naive?
             auto steamConnection = *(uintptr_t *) (playerConnection + (i * 0x100));
             if (steamConnection == NULL) {
-                #ifndef NDEBUG
                 Logging::WriteLine("Got player connection without steam connection!");
-                #endif
                 continue;
             }
 
@@ -46,10 +40,26 @@ namespace EROnlineSummons {
                 continue;
             }
 
+            #ifndef NDEBUG
             Logging::WriteLine("Retrieved steam ID of %llu", playerSteamId);
+            #endif
             result.emplace_back(playerSteamId);
         }
 
         return result;
+    }
+
+    uintptr_t SessionManager::getSessionManagerBase() {
+        auto sessionManagerImp = *(uintptr_t *) (GetBaseAddress() + OFFSET_SESSION_MANAGER_IMP);
+        if (sessionManagerImp == NULL) {
+            Logging::WriteLine("Could not obtain CSSessionManagerImp");
+            return 0;
+        }
+
+        return sessionManagerImp;
+    }
+
+    NetworkState SessionManager::getNetworkState() {
+        return *(NetworkState *) (getSessionManagerBase() + 0xC);
     }
 }

@@ -25,7 +25,7 @@ set(SOURCES
     src/game/SummonBuddyManager.cpp src/game/SummonBuddyManager.h
 
     src/OnlineSummons.cpp src/OnlineSummons.h
-)
+        src/SummonBuddyStateMachine.cpp src/SummonBuddyStateMachine.h)
 
 include_directories(src include)
 

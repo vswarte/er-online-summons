@@ -19,12 +19,23 @@ namespace EROnlineSummons {
         Logging::WriteLine("Sending SummonSpawned message (size: %i)", sizeof(SummonSpawnedMessage));
         #endif
 
-        auto summonSpawnedMessage = SummonSpawnedMessage();
-        summonSpawnedMessage.header.type = SummonNetworkMessageType::SummonSpawned;
-        summonSpawnedMessage.buddyGoodsId = buddyGoodsId;
+        auto message = SummonSpawnedMessage();
+        message.header.type = SummonNetworkMessageType::SummonSpawned;
+        message.buddyGoodsId = buddyGoodsId;
 
-        // TODO: Probably very cursed and a health hazard, but works for testing I hope
-        broadcastBuffer((char *) &summonSpawnedMessage, sizeof(SummonSpawnedMessage));
+        broadcastBuffer((char *) &message, sizeof(SummonSpawnedMessage));
+    }
+
+    void SummonNetworking::SendRequestSummonSpawn(int buddyGoodsId) {
+        #ifndef NDEBUG
+        Logging::WriteLine("Sending RequestSummonSpawn message (size: %i)", sizeof(SummonSpawnedMessage));
+        #endif
+
+        auto message = RequestSummonSpawnMessage();
+        message.header.type = SummonNetworkMessageType::RequestSummonSpawn;
+        message.buddyGoodsId = buddyGoodsId;
+
+        broadcastBuffer((char *) &message, sizeof(RequestSummonSpawnMessage));
     }
 
     // TODO: refactor handling into a reactor pattern

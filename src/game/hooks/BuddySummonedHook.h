@@ -11,7 +11,11 @@ namespace EROnlineSummons {
 
     private:
         static BuddySummonedHook *_instance;
-        static bool onInvoke(uintptr_t worldChrMan, int summonGoodsId, bool local);
+        static bool onInvoke(uintptr_t worldChrMan, int buddyGoodsId, bool local);
+        static bool invokeOriginal(uintptr_t worldChrMan, int buddyGoodsId);
+
+        static void handleSummonSpawn(int buddyGoodsId, bool isHost, bool isLocalInvocation);
+        static void handleSummonDespawn(int buddyGoodsId, bool isHost, bool isLocalInvocation);
 
         SummonNetworking *_summonNetworking = nullptr;
     };

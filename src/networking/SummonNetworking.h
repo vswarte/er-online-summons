@@ -15,6 +15,8 @@ namespace EROnlineSummons {
         SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages, SummonBuddyManager *summonBuddyManager);
 
         void SendSummonSpawned(int buddyGoodsId);
+        void SendRequestSummonSpawn(int buddyGoodsId);
+
         void ReadSummonEvents();
 
     private:

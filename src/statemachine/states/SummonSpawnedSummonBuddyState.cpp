@@ -6,9 +6,19 @@ namespace EROnlineSummons {
         SummonNetworking *summonNetworking,
         int buddyGoodsId
     ) {
+        SummonSpawnedSummonBuddyState(summonBuddyManager, summonNetworking, buddyGoodsId, nullptr);
+    }
+
+    SummonSpawnedSummonBuddyState::SummonSpawnedSummonBuddyState(
+        SummonBuddyManager *summonBuddyManager,
+        SummonNetworking *summonNetworking,
+        int buddyGoodsId,
+        SummonBuddySpawnOrigin *spawnOrigin
+    ) {
         _summonBuddyManager = summonBuddyManager;
         _summonNetworking = summonNetworking;
         _buddyGoodsId = buddyGoodsId;
+        _spawnOrigin = spawnOrigin;
     }
 
     SummonBuddyStateMachine::State SummonSpawnedSummonBuddyState::GetStateEnum() {
@@ -21,11 +31,21 @@ namespace EROnlineSummons {
     }
 
     void SummonSpawnedSummonBuddyState::Enter() {
-        Logging::WriteLine("Entering Summon Spawned State with buddy goods %i", _buddyGoodsId);
+        Logging::WriteLine("Entering Summon Spawned state with buddy goods %i", _buddyGoodsId);
 
-        _summonBuddyManager->SpawnSummons(_buddyGoodsId);
+        if(!_summonNetworking->ShouldNetwork()) {
+            _summonBuddyManager->SpawnSummons(_buddyGoodsId);
+            return;
+        }
+
         if (_summonNetworking->HasAuthority()) {
-            _summonNetworking->SendSummonSpawned(_buddyGoodsId);
+            _summonBuddyManager->SpawnSummons(_buddyGoodsId);
+            _summonNetworking->SendSummonSpawned(_buddyGoodsId, _summonBuddyManager->GetSpawnOrigin());
+        } else {
+            if (_spawnOrigin == nullptr) {
+                Logging::WriteLine("Entering Summon Spawned state, but didn't get spawnOrigin");
+            }
+            _summonBuddyManager->SpawnSummons(_buddyGoodsId, _spawnOrigin);
         }
     }
 

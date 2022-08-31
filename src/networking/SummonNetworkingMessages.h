@@ -13,6 +13,11 @@ namespace EROnlineSummons {
     struct __attribute__ ((__packed__)) SummonSpawnedMessage {
         SummonMessageHeader header;
         int buddyGoodsId;
+        float spawnOriginX;
+        float spawnOriginY;
+        float spawnOriginZ;
+        float unk0xc;
+        float spawnAngle;
     };
 
     struct __attribute__ ((__packed__)) SummonRequestedMessage {

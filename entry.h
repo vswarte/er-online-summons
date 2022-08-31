@@ -17,3 +17,4 @@ void attach();
 void detach();
 
 LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS*);
+PVOID vehHandle;

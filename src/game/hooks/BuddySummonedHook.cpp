@@ -16,7 +16,7 @@ namespace EROnlineSummons {
     }
 
     // TODO: keep track of who initiated summons some other way as this is abusing registers that aren't ours (isLocalInvocation)
-    bool BuddySummonedHook::onInvoke(uintptr_t worldChrMan, int buddyGoodsId) {
+    bool BuddySummonedHook::onInvoke(uintptr_t summonBuddyManager, int buddyGoodsId) {
         #ifndef NDEBUG
         Logging::WriteLine("Invoked BuddySummonedHook: %i", buddyGoodsId);
         #endif

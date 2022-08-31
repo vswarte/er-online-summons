@@ -17,7 +17,7 @@ namespace EROnlineSummons {
         };
 
         static BuddyGoodsStateHook *_instance;
-        static BuddyGoodsStates onInvoke(uintptr_t worldChrMan, int buddyGoodsId);
+        static BuddyGoodsStates onInvoke(uintptr_t summonBuddyManager, int buddyGoodsId);
 
         SummonBuddyStateMachine *_stateMachine = nullptr;
     };

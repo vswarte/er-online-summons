@@ -11,6 +11,14 @@ namespace EROnlineSummons {
             SummonNetworking *summonNetworking,
             int buddyGoodsId
         );
+
+        SummonSpawnedSummonBuddyState(
+            SummonBuddyManager *summonBuddyManager,
+            SummonNetworking *summonNetworking,
+            int buddyGoodsId,
+            SummonBuddySpawnOrigin *spawnOrigin
+        );
+
         SummonBuddyStateMachine::State GetStateEnum() override;
 
         bool ValidatePreviousState(SummonBuddyStateMachine::State previousState) override;
@@ -21,5 +29,6 @@ namespace EROnlineSummons {
         SummonBuddyManager *_summonBuddyManager = nullptr;
         SummonNetworking *_summonNetworking = nullptr;
         int _buddyGoodsId;
+        SummonBuddySpawnOrigin *_spawnOrigin = nullptr;
     };
 }

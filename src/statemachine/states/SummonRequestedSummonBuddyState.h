@@ -7,9 +7,8 @@ namespace EROnlineSummons {
     class SummonRequestedSummonBuddyState : public SummonBuddyState {
     public:
         SummonRequestedSummonBuddyState(
-                SummonBuddyManager *summonBuddyManager,
-                SummonNetworking *summonNetworking,
-                int buddyGoodsId
+            SummonNetworking *summonNetworking,
+            int buddyGoodsId
         );
         SummonBuddyStateMachine::State GetStateEnum() override;
 
@@ -18,7 +17,6 @@ namespace EROnlineSummons {
         void Exit() override;
 
     private:
-        SummonBuddyManager *_summonBuddyManager = nullptr;
         SummonNetworking *_summonNetworking = nullptr;
         int _buddyGoodsId;
     };

@@ -20,8 +20,8 @@ void attach() {
     EROnlineSummons::Logging::Init();
 
     #ifndef NDEBUG
-    SetUnhandledExceptionFilter(exception_handler);
-    AddVectoredExceptionHandler(0, exception_handler);
+//    SetUnhandledExceptionFilter(exception_handler);
+    vehHandle = AddVectoredExceptionHandler(0, exception_handler);
     #endif
 
     if (MH_Initialize() != MH_OK) {
@@ -56,6 +56,10 @@ void detach() {
     #endif
 
     EROnlineSummons::Logging::Deinit();
+
+    #ifndef NDEBUG
+    RemoveVectoredExceptionHandler(vehHandle);
+    #endif
 }
 
 LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* exception) {

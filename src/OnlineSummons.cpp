@@ -67,11 +67,18 @@ namespace EROnlineSummons {
     }
 
     void OnlineSummons::handleSummonRequestedMessage(SummonRequestedMessage *message) {
+        if (!_summonNetworking->HasAuthority()) {
+            Logging::WriteLine("Got summon request while not having authority");
+            return;
+        }
         _stateMachine->TransitionTo(_stateFactory->CreateSummonSpawnedState(message->buddyGoodsId));
     }
 
     void OnlineSummons::handleSummonSpawnedMessage(SummonSpawnedMessage *message) {
-        _stateMachine->TransitionTo(_stateFactory->CreateSummonSpawnedState(message->buddyGoodsId));
+        // TODO: pass through steam ID for message to validate against host
+        _stateMachine->TransitionTo(
+            _stateFactory->CreateSummonSpawnedState(message->buddyGoodsId)
+        );
     }
 
     // TODO: get some AOBs going for these
@@ -91,5 +98,4 @@ namespace EROnlineSummons {
             Logging::WriteLine("Could not attach buddy goods state hook");
         }
     }
-
 }

@@ -9,10 +9,25 @@ namespace EROnlineSummons {
         _steamNetworkingMessages = steamNetworkingMessages;
     }
 
-    void SummonNetworking::SendSummonSpawned(int buddyGoodsId) {
+    void SummonNetworking::SendSummonSpawned(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin) {
         auto message = SummonSpawnedMessage();
         message.header.type = SummonNetworkMessageType::SummonSpawned;
         message.buddyGoodsId = buddyGoodsId;
+        message.spawnOriginX = spawnOrigin->x;
+        message.spawnOriginY = spawnOrigin->y;
+        message.spawnOriginZ = spawnOrigin->z;
+        message.unk0xc = spawnOrigin->unk0xc;
+        message.spawnAngle = spawnOrigin->angle;
+
+        Logging::WriteLine(
+            "Built SummonSpawnedMessage (buddyGoodsId: %i, X: %f, Y: %f, Z: %f, Unk0xC: %f, Angle: %f)",
+            message.buddyGoodsId,
+            message.spawnOriginX,
+            message.spawnOriginY,
+            message.spawnOriginZ,
+            message.unk0xc,
+            message.spawnAngle
+        );
 
         broadcastBuffer((char *) &message, sizeof(SummonSpawnedMessage));
     }
@@ -22,7 +37,7 @@ namespace EROnlineSummons {
         message.header.type = SummonNetworkMessageType::SummonRequested;
         message.buddyGoodsId = buddyGoodsId;
 
-        broadcastBuffer((char *) &message, sizeof(SummonRequestedMessage));
+        sendBuffer(SessionManager::GetHostSteamId(), (char *) &message, sizeof(SummonRequestedMessage));
     }
 
     // TODO: refactor handling into a reactor pattern

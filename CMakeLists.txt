@@ -26,7 +26,8 @@ set(SOURCES
     src/statemachine/SummonBuddyStateFactory.cpp src/statemachine/SummonBuddyStateFactory.h
     src/statemachine/states/SummonRequestedSummonBuddyState.cpp src/statemachine/states/SummonRequestedSummonBuddyState.h
     src/OnlineSummons.cpp src/OnlineSummons.h
-        src/game/hooks/BuddyGoodsStateHook.cpp src/game/hooks/BuddyGoodsStateHook.h)
+    src/game/hooks/BuddyGoodsStateHook.cpp src/game/hooks/BuddyGoodsStateHook.h
+)
 
 include_directories(src include)
 

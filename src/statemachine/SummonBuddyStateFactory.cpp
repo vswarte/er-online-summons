@@ -14,7 +14,7 @@ namespace EROnlineSummons {
     }
 
     SummonRequestedSummonBuddyState *SummonBuddyStateFactory::CreateSummonRequestedState(int buddyGoodsId) {
-        return new SummonRequestedSummonBuddyState(_summonBuddyManager, _summonNetworking, buddyGoodsId);
+        return new SummonRequestedSummonBuddyState(_summonNetworking, buddyGoodsId);
     }
 
     NoSummonSummonBuddyState *SummonBuddyStateFactory::CreateNoSummonState() {

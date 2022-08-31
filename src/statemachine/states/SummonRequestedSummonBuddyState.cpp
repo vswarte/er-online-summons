@@ -2,11 +2,9 @@
 
 namespace EROnlineSummons {
     SummonRequestedSummonBuddyState::SummonRequestedSummonBuddyState(
-            SummonBuddyManager *summonBuddyManager,
             SummonNetworking *summonNetworking,
             int buddyGoodsId
     ) {
-        _summonBuddyManager = summonBuddyManager;
         _summonNetworking = summonNetworking;
         _buddyGoodsId = buddyGoodsId;
     }
@@ -21,7 +19,6 @@ namespace EROnlineSummons {
 
     void SummonRequestedSummonBuddyState::Enter() {
         Logging::WriteLine("Entering Summon Requested State with buddy goods %i", _buddyGoodsId);
-
         _summonNetworking->SendRequestSummonSpawn(_buddyGoodsId);
     }
 

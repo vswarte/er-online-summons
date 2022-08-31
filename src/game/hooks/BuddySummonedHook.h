@@ -2,6 +2,7 @@
 
 #include "core/Logging.h"
 #include "core/JumpHook.h"
+#include "game/SummonBuddyManager.h"
 #include "networking/SummonNetworking.h"
 #include "statemachine/SummonBuddyStateFactory.h"
 

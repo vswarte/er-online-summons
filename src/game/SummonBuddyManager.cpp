@@ -82,5 +82,4 @@ namespace EROnlineSummons {
         currentOrigin->unk0xc = newOrigin->unk0xc;
         currentOrigin->angle = newOrigin->angle;
     }
-
 }

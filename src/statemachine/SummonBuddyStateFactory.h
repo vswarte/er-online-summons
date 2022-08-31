@@ -14,6 +14,7 @@ namespace EROnlineSummons {
         );
 
         SummonSpawnedSummonBuddyState *CreateSummonSpawnedState(int buddyGoodsId);
+        SummonSpawnedSummonBuddyState *CreateSummonSpawnedState(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin);
         SummonRequestedSummonBuddyState *CreateSummonRequestedState(int buddyGoodsId);
         NoSummonSummonBuddyState *CreateNoSummonState();
 

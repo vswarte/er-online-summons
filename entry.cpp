@@ -109,5 +109,10 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* exception) {
     }
 
     EROnlineSummons::Logging::WriteLine(exception_text);
+
+    #ifndef NDEBUG
+//    MessageBoxA(NULL, "EROnlineSummons Exception", "Confirm after completing the debug", MB_ICONWARNING | MB_OK | MB_DEFBUTTON2);
+    #endif
+
     return EXCEPTION_CONTINUE_SEARCH;
 }

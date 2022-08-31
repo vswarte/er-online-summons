@@ -5,8 +5,7 @@ namespace EROnlineSummons {
         SummonBuddyManager *summonBuddyManager,
         SummonNetworking *summonNetworking,
         int buddyGoodsId
-    ) {
-        SummonSpawnedSummonBuddyState(summonBuddyManager, summonNetworking, buddyGoodsId, nullptr);
+    ) : SummonSpawnedSummonBuddyState(summonBuddyManager, summonNetworking, buddyGoodsId, nullptr) {
     }
 
     SummonSpawnedSummonBuddyState::SummonSpawnedSummonBuddyState(

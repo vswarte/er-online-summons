@@ -109,6 +109,9 @@ namespace EROnlineSummons {
             0,
             ER_ONLINE_SUMMONS_STEAM_MESSAGE_CHANNEL
         );
+        #ifndef NDEBUG
+        Logging::WriteLine("Done sending buffer to %llu", steamId);
+        #endif
 
         if (result != EResult::k_EResultOK) {
             Logging::WriteLine("Could not send buffer result: %i", result);

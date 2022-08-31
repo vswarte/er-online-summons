@@ -1,4 +1,4 @@
-#include "SummonBuddyStateFactory.h"
+#include "statemachine/SummonBuddyStateFactory.h"
 
 namespace EROnlineSummons {
     SummonBuddyStateFactory::SummonBuddyStateFactory(
@@ -11,6 +11,10 @@ namespace EROnlineSummons {
 
     SummonSpawnedSummonBuddyState *SummonBuddyStateFactory::CreateSummonSpawnedState(int buddyGoodsId) {
         return new SummonSpawnedSummonBuddyState(_summonBuddyManager, _summonNetworking, buddyGoodsId);
+    }
+
+    SummonSpawnedSummonBuddyState *SummonBuddyStateFactory::CreateSummonSpawnedState(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin) {
+        return new SummonSpawnedSummonBuddyState(_summonBuddyManager, _summonNetworking, buddyGoodsId, spawnOrigin);
     }
 
     SummonRequestedSummonBuddyState *SummonBuddyStateFactory::CreateSummonRequestedState(int buddyGoodsId) {

@@ -77,7 +77,13 @@ namespace EROnlineSummons {
     void OnlineSummons::handleSummonSpawnedMessage(SummonSpawnedMessage *message) {
         // TODO: pass through steam ID for message to validate against host
         _stateMachine->TransitionTo(
-            _stateFactory->CreateSummonSpawnedState(message->buddyGoodsId)
+            _stateFactory->CreateSummonSpawnedState(message->buddyGoodsId, new SummonBuddySpawnOrigin {
+                x: message->spawnOriginX,
+                y: message->spawnOriginY,
+                z: message->spawnOriginZ,
+                unk0xc: message->unk0xc,
+                angle: message->spawnAngle,
+            })
         );
     }
 

@@ -9,6 +9,14 @@ namespace EROnlineSummons {
         _summonNetworking = summonNetworking;
     }
 
+    NoSummonSummonBuddyState *SummonBuddyStateFactory::CreateNoSummonState() {
+        return new NoSummonSummonBuddyState();
+    }
+
+    SummonSpawnRequestedSummonBuddyState *SummonBuddyStateFactory::CreateSummonSpawnRequestedState(int buddyGoodsId) {
+        return new SummonSpawnRequestedSummonBuddyState(_summonNetworking, buddyGoodsId);
+    }
+
     SummonSpawnedSummonBuddyState *SummonBuddyStateFactory::CreateSummonSpawnedState(int buddyGoodsId) {
         return new SummonSpawnedSummonBuddyState(_summonBuddyManager, _summonNetworking, buddyGoodsId);
     }
@@ -17,11 +25,7 @@ namespace EROnlineSummons {
         return new SummonSpawnedSummonBuddyState(_summonBuddyManager, _summonNetworking, buddyGoodsId, spawnOrigin);
     }
 
-    SummonRequestedSummonBuddyState *SummonBuddyStateFactory::CreateSummonRequestedState(int buddyGoodsId) {
-        return new SummonRequestedSummonBuddyState(_summonNetworking, buddyGoodsId);
-    }
-
-    NoSummonSummonBuddyState *SummonBuddyStateFactory::CreateNoSummonState() {
-        return new NoSummonSummonBuddyState();
+    SummonDespawnRequestedSummonBuddyState *SummonBuddyStateFactory::CreateSummonDespawnRequestedState() {
+        return new SummonDespawnRequestedSummonBuddyState(_summonNetworking);
     }
 }

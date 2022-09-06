@@ -9,8 +9,9 @@ namespace EROnlineSummons {
     public:
         enum State {
             NO_SUMMONS,
-            SUMMON_REQUESTED,
+            SUMMON_SPAWN_REQUESTED,
             SUMMON_SPAWNED,
+            SUMMON_DESPAWN_REQUESTED,
         };
 
         SummonBuddyStateMachine(SummonBuddyState *initialState);

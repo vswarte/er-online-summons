@@ -26,7 +26,7 @@ namespace EROnlineSummons {
 
     bool SummonSpawnedSummonBuddyState::ValidatePreviousState(SummonBuddyStateMachine::State previousState) {
         return stateEquals(SummonBuddyStateMachine::NO_SUMMONS, previousState) ||
-            stateEquals(SummonBuddyStateMachine::SUMMON_REQUESTED, previousState);
+            stateEquals(SummonBuddyStateMachine::SUMMON_SPAWN_REQUESTED, previousState);
     }
 
     void SummonSpawnedSummonBuddyState::Enter() {
@@ -39,7 +39,7 @@ namespace EROnlineSummons {
 
         if (_summonNetworking->HasAuthority()) {
             _summonBuddyManager->SpawnSummons(_buddyGoodsId);
-            _summonNetworking->SendSummonSpawned(_buddyGoodsId, _summonBuddyManager->GetSpawnOrigin());
+            _summonNetworking->SendSummonSpawn(_buddyGoodsId, _summonBuddyManager->GetSpawnOrigin());
         } else {
             if (_spawnOrigin == nullptr) {
                 Logging::WriteLine("Entering Summon Spawned state, but didn't get spawnOrigin");
@@ -50,6 +50,9 @@ namespace EROnlineSummons {
 
     void SummonSpawnedSummonBuddyState::Exit() {
         Logging::WriteLine("Exiting Summon Spawned State");
+        if (_summonNetworking->HasAuthority()) {
+            _summonNetworking->SendSummonDespawn();
+        }
         _summonBuddyManager->QueueRemoveAllSummons();
     }
 }

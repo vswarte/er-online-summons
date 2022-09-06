@@ -14,8 +14,10 @@ namespace EROnlineSummons {
     public:
         SummonNetworking(ISteamNetworkingMessages *steamNetworkingMessages);
 
-        void SendSummonSpawned(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin);
-        void SendRequestSummonSpawn(int buddyGoodsId);
+        void SendSummonSpawn(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin);
+        void SendSummonSpawnRequest(int buddyGoodsId);
+        void SendSummonDespawn();
+        void SendSummonDespawnRequest();
 
         std::vector<std::vector<char>> RetrieveMessages();
 

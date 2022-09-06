@@ -4,12 +4,10 @@
 #include "statemachine/SummonBuddyStateMachine.h"
 
 namespace EROnlineSummons {
-    class SummonRequestedSummonBuddyState : public SummonBuddyState {
+    class SummonDespawnRequestedSummonBuddyState : public SummonBuddyState {
     public:
-        SummonRequestedSummonBuddyState(
-            SummonNetworking *summonNetworking,
-            int buddyGoodsId
-        );
+        SummonDespawnRequestedSummonBuddyState(SummonNetworking *summonNetworking);
+
         SummonBuddyStateMachine::State GetStateEnum() override;
 
         bool ValidatePreviousState(SummonBuddyStateMachine::State previousState) override;
@@ -18,6 +16,5 @@ namespace EROnlineSummons {
 
     private:
         SummonNetworking *_summonNetworking = nullptr;
-        int _buddyGoodsId;
     };
 }

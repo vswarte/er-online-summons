@@ -33,9 +33,12 @@ namespace EROnlineSummons {
         volatile bool _stopRequested = false;
         volatile bool _threadStopped = false;
 
+        // TODO: refactor this to some message handler construction
         void handleMessage(std::vector<char> message);
-        void handleSummonRequestedMessage(SummonRequestedMessage *message);
-        void handleSummonSpawnedMessage(SummonSpawnedMessage *message);
+        void handleSummonSpawnRequestedMessage(SummonSpawnRequestMessage *message);
+        void handleSummonSpawnedMessage(SummonSpawnMessage *message);
+        void handleSummonDespawnRequestedMessage(SummonDespawnRequestMessage *message);
+        void handleSummonDespawnedMessage(SummonDespawnMessage *message);
 
         void setupHooks();
         BuddySummonedHook *_buddySummonedHook = nullptr;

@@ -24,9 +24,10 @@ set(SOURCES
     src/statemachine/states/SummonSpawnedSummonBuddyState.cpp src/statemachine/states/SummonSpawnedSummonBuddyState.h
     src/statemachine/states/NoSummonSummonBuddyState.cpp src/statemachine/states/NoSummonSummonBuddyState.h
     src/statemachine/SummonBuddyStateFactory.cpp src/statemachine/SummonBuddyStateFactory.h
-    src/statemachine/states/SummonRequestedSummonBuddyState.cpp src/statemachine/states/SummonRequestedSummonBuddyState.h
+    src/statemachine/states/SummonSpawnRequestedSummonBuddyState.cpp src/statemachine/states/SummonSpawnRequestedSummonBuddyState.h
     src/OnlineSummons.cpp src/OnlineSummons.h
     src/game/hooks/BuddyGoodsStateHook.cpp src/game/hooks/BuddyGoodsStateHook.h
+    src/statemachine/states/SummonDespawnRequestedSummonBuddyState.cpp src/statemachine/states/SummonDespawnRequestedSummonBuddyState.h
 )
 
 include_directories(src include)

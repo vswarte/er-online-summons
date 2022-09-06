@@ -6,7 +6,8 @@ namespace EROnlineSummons {
     }
 
     bool NoSummonSummonBuddyState::ValidatePreviousState(SummonBuddyStateMachine::State previousState) {
-        return stateEquals(SummonBuddyStateMachine::SUMMON_SPAWNED, previousState);
+        return stateEquals(SummonBuddyStateMachine::SUMMON_SPAWNED, previousState)
+            || stateEquals(SummonBuddyStateMachine::SUMMON_DESPAWN_REQUESTED, previousState);
     }
 
     void NoSummonSummonBuddyState::Enter() {

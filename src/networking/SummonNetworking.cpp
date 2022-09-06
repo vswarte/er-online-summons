@@ -9,9 +9,9 @@ namespace EROnlineSummons {
         _steamNetworkingMessages = steamNetworkingMessages;
     }
 
-    void SummonNetworking::SendSummonSpawned(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin) {
-        auto message = SummonSpawnedMessage();
-        message.header.type = SummonNetworkMessageType::SummonSpawned;
+    void SummonNetworking::SendSummonSpawn(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin) {
+        auto message = SummonSpawnMessage();
+        message.header.type = SummonNetworkMessageType::SummonSpawn;
         message.buddyGoodsId = buddyGoodsId;
         message.spawnOriginX = spawnOrigin->x;
         message.spawnOriginY = spawnOrigin->y;
@@ -19,8 +19,9 @@ namespace EROnlineSummons {
         message.unk0xc = spawnOrigin->unk0xc;
         message.spawnAngle = spawnOrigin->angle;
 
+        #ifndef NDEBUG
         Logging::WriteLine(
-            "Built SummonSpawnedMessage (buddyGoodsId: %i, X: %f, Y: %f, Z: %f, Unk0xC: %f, Angle: %f)",
+            "Built SummonSpawnMessage (buddyGoodsId: %i, X: %f, Y: %f, Z: %f, Unk0xC: %f, Angle: %f)",
             message.buddyGoodsId,
             message.spawnOriginX,
             message.spawnOriginY,
@@ -28,16 +29,39 @@ namespace EROnlineSummons {
             message.unk0xc,
             message.spawnAngle
         );
+        #endif
 
-        broadcastBuffer((char *) &message, sizeof(SummonSpawnedMessage));
+        broadcastBuffer((char *) &message, sizeof(SummonSpawnMessage));
     }
 
-    void SummonNetworking::SendRequestSummonSpawn(int buddyGoodsId) {
-        auto message = SummonRequestedMessage();
-        message.header.type = SummonNetworkMessageType::SummonRequested;
+    void SummonNetworking::SendSummonSpawnRequest(int buddyGoodsId) {
+        auto message = SummonSpawnRequestMessage();
+        message.header.type = SummonNetworkMessageType::SummonSpawnRequest;
         message.buddyGoodsId = buddyGoodsId;
 
-        sendBuffer(SessionManager::GetHostSteamId(), (char *) &message, sizeof(SummonRequestedMessage));
+        sendBuffer(SessionManager::GetHostSteamId(), (char *) &message, sizeof(SummonSpawnRequestMessage));
+    }
+
+    void SummonNetworking::SendSummonDespawn() {
+        auto message = SummonDespawnMessage();
+        message.header.type = SummonNetworkMessageType::SummonDespawn;
+
+        #ifndef NDEBUG
+        Logging::WriteLine("Sending summon despawn message");
+        #endif
+
+        broadcastBuffer((char *) &message, sizeof(SummonDespawnMessage));
+    }
+
+    void SummonNetworking::SendSummonDespawnRequest() {
+        auto message = SummonDespawnRequestMessage();
+        message.header.type = SummonNetworkMessageType::SummonDespawnRequest;
+
+        #ifndef NDEBUG
+        Logging::WriteLine("Sending summon despawn request");
+        #endif
+
+        sendBuffer(SessionManager::GetHostSteamId(), (char *) &message, sizeof(SummonDespawnRequestMessage));
     }
 
     // TODO: refactor handling into a reactor pattern
@@ -73,10 +97,14 @@ namespace EROnlineSummons {
 
     int SummonNetworking::getMessageLength(SummonNetworkMessageType type) {
         switch (type) {
-            case SummonNetworkMessageType::SummonSpawned:
-                return sizeof(SummonSpawnedMessage);
-            case SummonNetworkMessageType::SummonRequested:
-                return sizeof(SummonRequestedMessage);
+            case SummonNetworkMessageType::SummonSpawnRequest:
+                return sizeof(SummonSpawnRequestMessage);
+            case SummonNetworkMessageType::SummonSpawn:
+                return sizeof(SummonSpawnMessage);
+            case SummonNetworkMessageType::SummonDespawnRequest:
+                return sizeof(SummonDespawnRequestMessage);
+            case SummonNetworkMessageType::SummonDespawn:
+                return sizeof(SummonDespawnMessage);
         }
 
         return 0;

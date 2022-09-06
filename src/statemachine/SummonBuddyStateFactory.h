@@ -3,7 +3,8 @@
 #include "networking/SummonNetworking.h"
 #include "statemachine/states/NoSummonSummonBuddyState.h"
 #include "statemachine/states/SummonSpawnedSummonBuddyState.h"
-#include "statemachine/states/SummonRequestedSummonBuddyState.h"
+#include "statemachine/states/SummonSpawnRequestedSummonBuddyState.h"
+#include "statemachine/states/SummonDespawnRequestedSummonBuddyState.h"
 
 namespace EROnlineSummons {
     class SummonBuddyStateFactory {
@@ -13,10 +14,11 @@ namespace EROnlineSummons {
             SummonNetworking *summonNetworking
         );
 
+        NoSummonSummonBuddyState *CreateNoSummonState();
+        SummonSpawnRequestedSummonBuddyState *CreateSummonSpawnRequestedState(int buddyGoodsId);
         SummonSpawnedSummonBuddyState *CreateSummonSpawnedState(int buddyGoodsId);
         SummonSpawnedSummonBuddyState *CreateSummonSpawnedState(int buddyGoodsId, SummonBuddySpawnOrigin *spawnOrigin);
-        SummonRequestedSummonBuddyState *CreateSummonRequestedState(int buddyGoodsId);
-        NoSummonSummonBuddyState *CreateNoSummonState();
+        SummonDespawnRequestedSummonBuddyState *CreateSummonDespawnRequestedState();
 
     private:
         SummonBuddyManager *_summonBuddyManager = nullptr;

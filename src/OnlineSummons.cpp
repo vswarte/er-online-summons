@@ -52,10 +52,14 @@ namespace EROnlineSummons {
         #endif
 
         switch (header->type) {
-            case SummonNetworkMessageType::SummonRequested:
-                return handleSummonRequestedMessage((SummonRequestedMessage *) data);
-            case SummonNetworkMessageType::SummonSpawned:
-                return handleSummonSpawnedMessage((SummonSpawnedMessage *) data);
+            case SummonNetworkMessageType::SummonSpawnRequest:
+                return handleSummonSpawnRequestedMessage((SummonSpawnRequestMessage *) data);
+            case SummonNetworkMessageType::SummonSpawn:
+                return handleSummonSpawnedMessage((SummonSpawnMessage *) data);
+            case SummonNetworkMessageType::SummonDespawnRequest:
+                return handleSummonDespawnRequestedMessage((SummonDespawnRequestMessage *) data);
+            case SummonNetworkMessageType::SummonDespawn:
+                return handleSummonDespawnedMessage((SummonDespawnMessage *) data);
         }
     }
 
@@ -66,15 +70,15 @@ namespace EROnlineSummons {
         }
     }
 
-    void OnlineSummons::handleSummonRequestedMessage(SummonRequestedMessage *message) {
+    void OnlineSummons::handleSummonSpawnRequestedMessage(SummonSpawnRequestMessage *message) {
         if (!_summonNetworking->HasAuthority()) {
-            Logging::WriteLine("Got summon request while not having authority");
+            Logging::WriteLine("Got summon spawn request while not having authority");
             return;
         }
         _stateMachine->TransitionTo(_stateFactory->CreateSummonSpawnedState(message->buddyGoodsId));
     }
 
-    void OnlineSummons::handleSummonSpawnedMessage(SummonSpawnedMessage *message) {
+    void OnlineSummons::handleSummonSpawnedMessage(SummonSpawnMessage *message) {
         // TODO: pass through steam ID for message to validate against host
         _stateMachine->TransitionTo(
             _stateFactory->CreateSummonSpawnedState(message->buddyGoodsId, new SummonBuddySpawnOrigin {
@@ -85,6 +89,19 @@ namespace EROnlineSummons {
                 angle: message->spawnAngle,
             })
         );
+    }
+
+    void OnlineSummons::handleSummonDespawnRequestedMessage(SummonDespawnRequestMessage *message) {
+        if (!_summonNetworking->HasAuthority()) {
+            Logging::WriteLine("Got summon request while not having authority");
+            return;
+        }
+        _stateMachine->TransitionTo(_stateFactory->CreateNoSummonState());
+    }
+
+    void OnlineSummons::handleSummonDespawnedMessage(SummonDespawnMessage *message) {
+        // TODO: pass through steam ID for message to validate against host
+        _stateMachine->TransitionTo(_stateFactory->CreateNoSummonState());
     }
 
     // TODO: get some AOBs going for these

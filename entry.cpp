@@ -64,6 +64,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* exception) {
     PEXCEPTION_RECORD record  = exception->ExceptionRecord;
     PCONTEXT context = exception->ContextRecord;
     char exception_text[EXCEPTION_STRING_SIZE];
+    bool shouldBlock = false;
 
     auto moduleBase = EROnlineSummons::GetBaseAddress();
     switch (record->ExceptionCode) {
@@ -90,6 +91,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* exception) {
                     context->R8,  context->R9,  context->R10, context->R11,
                     context->R12, context->R13, context->R14, context->R15
             );
+            shouldBlock = true;
             break;
         default:
             snprintf(
@@ -107,6 +109,12 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* exception) {
     }
 
     EROnlineSummons::Logging::WriteLine(exception_text);
+
+    #ifndef NDEBUG
+        if (shouldBlock) {
+            MessageBoxA(NULL, "Access Violation", "Confirm after completing the debug", MB_ICONWARNING | MB_OK | MB_DEFBUTTON2);
+        }
+    #endif
 
     return EXCEPTION_CONTINUE_SEARCH;
 }

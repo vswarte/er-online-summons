@@ -20,7 +20,6 @@ void attach() {
     EROnlineSummons::Logging::Init();
 
     #ifndef NDEBUG
-//    SetUnhandledExceptionFilter(exception_handler);
     vehHandle = AddVectoredExceptionHandler(0, exception_handler);
     #endif
 
@@ -34,7 +33,6 @@ void attach() {
 
     auto summonNetworking = new EROnlineSummons::SummonNetworking(steamInterfaceProvider->GetNetworkingMessages());
 
-    // TODO: delete these on cleanup
     auto summonBuddyStateFactory = new EROnlineSummons::SummonBuddyStateFactory(summonBuddyManager, summonNetworking);
     auto summonBuddyStateMachine = new EROnlineSummons::SummonBuddyStateMachine(
         summonBuddyStateFactory->CreateNoSummonState()
@@ -109,10 +107,6 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* exception) {
     }
 
     EROnlineSummons::Logging::WriteLine(exception_text);
-
-    #ifndef NDEBUG
-//    MessageBoxA(NULL, "EROnlineSummons Exception", "Confirm after completing the debug", MB_ICONWARNING | MB_OK | MB_DEFBUTTON2);
-    #endif
 
     return EXCEPTION_CONTINUE_SEARCH;
 }

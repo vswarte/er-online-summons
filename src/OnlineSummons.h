@@ -9,6 +9,7 @@
 #include "game/hooks/BuddyGoodsStateHook.h"
 #include "statemachine/SummonBuddyStateMachine.h"
 #include "statemachine/SummonBuddyStateFactory.h"
+#include "game/codepatches/BuddyCleanupConditionCodePatch.h"
 
 namespace EROnlineSummons {
     class OnlineSummons {
@@ -43,5 +44,6 @@ namespace EROnlineSummons {
         void setupHooks();
         BuddySummonedHook *_buddySummonedHook = nullptr;
         BuddyGoodsStateHook *_buddyGoodsStateHook = nullptr;
+        BuddyCleanupConditionCodePatch *_summonCleanupConditionCodePatch = nullptr;
     };
 }

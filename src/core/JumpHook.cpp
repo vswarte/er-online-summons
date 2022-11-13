@@ -1,6 +1,8 @@
 #include "core/JumpHook.h"
 
 namespace EROnlineSummons {
+    void *JumpHook::_original = nullptr;
+
     JumpHook::JumpHook(uintptr_t target, uintptr_t replacement) {
         _target = target;
         _replacement = replacement;
@@ -31,5 +33,9 @@ namespace EROnlineSummons {
 
     uintptr_t JumpHook::GetOriginal() {
         return (uintptr_t) _original;
+    }
+
+    uintptr_t JumpHook::GetTarget() {
+        return (uintptr_t) _target;
     }
 }

@@ -22,8 +22,10 @@ namespace EROnlineSummons {
 
         awaitStop();
 
+        _summonCleanupConditionCodePatch->Uninstall();
         _buddySummonedHook->Uninstall();
         _buddyGoodsStateHook->Uninstall();
+        delete _summonCleanupConditionCodePatch;
         delete _buddySummonedHook;
         delete _buddyGoodsStateHook;
     }
@@ -120,5 +122,14 @@ namespace EROnlineSummons {
         if (!_buddyGoodsStateHook->Install()) {
             Logging::WriteLine("Could not attach buddy goods state hook");
         }
+
+        _summonCleanupConditionCodePatch = new BuddyCleanupConditionCodePatch(GetBaseAddress() + OFFSET_FN_SUMMON_CLEANUP_CONDITION);
+        _summonCleanupConditionCodePatch->Install();
+        /**
+        _buddyCleanupHook = new BuddyCleanupHook(GetBaseAddress() + OFFSET_FN_SUMMON_CLEANUP);
+        if (!_buddyCleanupHook->Install()) {
+            Logging::WriteLine("Could not attach buddy cleanup hook");
+        }
+        */
     }
 }

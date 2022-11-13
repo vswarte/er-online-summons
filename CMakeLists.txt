@@ -11,6 +11,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG=2")
 set(SOURCES
     entry.cpp entry.h
     src/core/JumpHook.cpp src/core/JumpHook.h
+    src/core/CodePatch.cpp src/core/CodePatch.h
     src/core/Logging.cpp src/core/Logging.h
     src/core/Memory.cpp src/core/Memory.h
     src/core/SteamInterfaceProvider.cpp src/core/SteamInterfaceProvider.h
@@ -28,7 +29,7 @@ set(SOURCES
     src/OnlineSummons.cpp src/OnlineSummons.h
     src/game/hooks/BuddyGoodsStateHook.cpp src/game/hooks/BuddyGoodsStateHook.h
     src/statemachine/states/SummonDespawnRequestedSummonBuddyState.cpp src/statemachine/states/SummonDespawnRequestedSummonBuddyState.h
-)
+        src/game/codepatches/BuddyCleanupConditionCodePatch.cpp src/game/codepatches/BuddyCleanupConditionCodePatch.h)
 
 include_directories(src include)
 

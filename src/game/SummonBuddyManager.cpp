@@ -56,9 +56,11 @@ namespace EROnlineSummons {
         if (prepareSpawnSummons(summonBuddyManager, (buddyGoodsId / 100) * 100) == 0) {
             *(uintptr_t*)&spawnSummons = GetBaseAddress() + OFFSET_FN_SPAWN_SUMMONS_1;
             spawnSummonsResult = spawnSummons(summonBuddyManager);
+            Logging::WriteLine("Spawn FN 1");
         } else {
             *(uintptr_t*)&spawnSummons = GetBaseAddress() + OFFSET_FN_SPAWN_SUMMONS_2;
             spawnSummonsResult = spawnSummons(summonBuddyManager, buddyGoodsId);
+            Logging::WriteLine("Spawn FN 2");
         }
 
         return spawnSummonsResult;

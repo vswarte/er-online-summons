@@ -9,13 +9,14 @@ namespace EROnlineSummons {
         JumpHook(uintptr_t original, uintptr_t replacement);
         ~JumpHook();
 
+        uintptr_t GetTarget();
         uintptr_t GetOriginal();
-        bool Uninstall();
-        bool Install();
+        virtual bool Uninstall();
+        virtual bool Install();
 
     private:
         uintptr_t _target;
         uintptr_t _replacement;
-        void *_original;
+        static void *_original;
     };
 }

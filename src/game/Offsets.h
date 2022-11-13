@@ -8,5 +8,6 @@
 #define OFFSET_FN_SPAWN_SUMMONS_1 (uintptr_t) 0x4b0660
 #define OFFSET_FN_SPAWN_SUMMONS_2 (uintptr_t) 0x4b0e00
 #define OFFSET_FN_USE_BUDDY_GOODS (uintptr_t) 0x4af5c0
-#define OFFSET_TLS_INDEX_USE_BUDDY_GOODS (uintptr_t) 0x44847D0
+#define OFFSET_TLS_INDEX_USE_BUDDY_GOODS (uintptr_t) 0x44847d0
 #define OFFSET_TLS_VALUE_USE_BUDDY_GOODS (uintptr_t) 0x3c41ec8
+#define OFFSET_FN_SUMMON_CLEANUP_CONDITION (uintptr_t) 0x50532c
